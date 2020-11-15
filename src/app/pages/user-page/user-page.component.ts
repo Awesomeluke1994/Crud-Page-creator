@@ -10,6 +10,7 @@ import {FormControl, Validators} from '@angular/forms';
 import {ConfirmDialogComponent, IConfirmDialogConfig} from '../../components/confirm-dialog/confirm-dialog.component';
 import {takeUntil} from 'rxjs/operators';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import randomNames from 'node-random-name';
 
 @Component({
   selector: 'app-user-page',
@@ -22,6 +23,7 @@ export class UserPageComponent implements OnDestroy {
   private destroyed$: Subject<void> = new Subject<void>();
   private readonly deleteUser: (user: IUser) => void;
   private readonly editUser: (user: IUser) => void;
+  private fakeUsersIndex = 0;
 
   constructor(
     private userService: UserService,
@@ -136,11 +138,13 @@ export class UserPageComponent implements OnDestroy {
 
   public createTenTestUsers(): void {
     for (let i = 0; i < 10; i++) {
+      const firstName = randomNames({first: true});
+      const lastName = randomNames({last: true});
       this.userService.addUser({
         id: uuidv4(),
-        firstName: `FirstName${i}`,
-        lastName: `LastName${i}`,
-        emailAddress: `EmailAddress${i}@email.com`
+        firstName,
+        lastName,
+        emailAddress: `${firstName}${lastName}@email.com`
       });
     }
   }
