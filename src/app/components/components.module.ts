@@ -8,13 +8,16 @@ import { CrudFormDialogComponent } from './crud-form-dialog/crud-form-dialog.com
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CrudPageComponent } from './crud-page/crud-page.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 
 
 @NgModule({
-  declarations: [CrudTableComponent, CrudFormDialogComponent, CrudPageComponent],
+  declarations: [CrudTableComponent, CrudFormDialogComponent, CrudPageComponent, ConfirmDialogComponent],
   exports: [
     CrudTableComponent,
     CrudPageComponent
@@ -27,7 +30,10 @@ import { CrudPageComponent } from './crud-page/crud-page.component';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    MatPaginatorModule,
+    MatSortModule,
+    ReactiveFormsModule
   ]
 })
 export class ComponentsModule { }

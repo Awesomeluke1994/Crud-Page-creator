@@ -4,6 +4,7 @@ import { UserPageComponent } from './user-page/user-page.component';
 import {ComponentsModule} from '../components/components.module';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 
@@ -13,7 +14,8 @@ import {MatIconModule} from '@angular/material/icon';
     CommonModule,
     ComponentsModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatSnackBarModule
   ]
 })
 export class PagesModule { }

@@ -1,16 +1,13 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private users: IUser[] = [
-    {id: uuidv4(), firstName: 'Peter', lastName: 'Bailish', emailAddress: 'Peter@email.com'}
-  ];
+  private users: IUser[] = [];
   private users$: BehaviorSubject<IUser[]> = new BehaviorSubject<IUser[]>(this.users);
 
   constructor() {

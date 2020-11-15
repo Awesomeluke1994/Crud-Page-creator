@@ -6,6 +6,10 @@ import {CrudFormDialogComponent, FormTypes, ICrudDialogConfig} from '../../compo
 import {v4 as uuidv4} from 'uuid';
 import {ICrudTableConfig} from '../../components/crud-table/crud-table.component';
 import {ICrudPageConfig} from '../../components/crud-page/crud-page.component';
+import {FormControl, Validators} from '@angular/forms';
+import {ConfirmDialogComponent, IConfirmDialogConfig} from '../../components/confirm-dialog/confirm-dialog.component';
+import {takeUntil} from 'rxjs/operators';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user-page',
@@ -21,12 +25,22 @@ export class UserPageComponent implements OnDestroy {
 
   constructor(
     private userService: UserService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {
     this.users = this.userService.getUsers(this.destroyed$);
 
     this.deleteUser = (user: IUser) => {
-      this.userService.deleteUserById(user.id);
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '500px',
+        data: {title: `Confirm deletion of ${user.firstName} ${user.lastName}`} as IConfirmDialogConfig
+      });
+      dialogRef.afterClosed().pipe(takeUntil(this.destroyed$)).subscribe(confirmed => {
+        if (confirmed) {
+          this.userService.deleteUserById(user.id);
+          this.snackBar.open('Deleted user');
+        }
+      });
     };
 
     this.editUser = (user: IUser) => {
@@ -38,6 +52,7 @@ export class UserPageComponent implements OnDestroy {
       dialogRef.afterClosed().subscribe((editedUser: IUser) => {
         if (editedUser) {
           this.userService.updateUser(editedUser);
+          this.snackBar.open('Edited user');
         }
       });
     };
@@ -53,8 +68,9 @@ export class UserPageComponent implements OnDestroy {
             emailAddress: createdUser.emailAddress,
             lastName: createdUser.lastName,
             firstName: createdUser.firstName,
-            id: uuidv4()
+            id: uuidv4(),
           });
+          this.snackBar.open('Created user');
         }
       });
     };
@@ -77,20 +93,31 @@ export class UserPageComponent implements OnDestroy {
         {
           formType: FormTypes.text,
           label: 'First Name',
-          dataSelector: 'firstName'
+          dataSelector: 'firstName',
+          required: true,
+          formControl: new FormControl('', [])
         },
         {
           formType: FormTypes.text,
           label: 'Last Name',
-          dataSelector: 'lastName'
+          dataSelector: 'lastName',
+          required: true,
+          formControl: new FormControl('', [])
         },
         {
           formType: FormTypes.text,
           label: 'Email address',
-          dataSelector: 'emailAddress'
-        }
+          dataSelector: 'emailAddress',
+          required: true,
+          formControl: new FormControl('', [Validators.email]),
+          placeholder: 'email@placeholder.com'
+        },
       ],
-      data: {...user}
+      data: {...user},
+      fieldErrorMessagesByErrorKey: new Map([
+        ['email', 'Email address is not valid'],
+        ['required', 'Value is required']
+      ])
     };
   }
 
@@ -105,5 +132,16 @@ export class UserPageComponent implements OnDestroy {
       onDelete: this.deleteUser,
       onEdit: this.editUser
     };
+  }
+
+  public createTenTestUsers(): void {
+    for (let i = 0; i <= 10; i++) {
+      this.userService.addUser({
+        id: uuidv4(),
+        firstName: `FirstName${i}`,
+        lastName: `LastName${i}`,
+        emailAddress: `EmailAddress${i}@email.com`
+      });
+    }
   }
 }
