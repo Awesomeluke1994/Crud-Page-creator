@@ -135,7 +135,7 @@ export class UserPageComponent implements OnDestroy {
   }
 
   public createTenTestUsers(): void {
-    for (let i = 0; i <= 10; i++) {
+    for (let i = 0; i < 10; i++) {
       this.userService.addUser({
         id: uuidv4(),
         firstName: `FirstName${i}`,
