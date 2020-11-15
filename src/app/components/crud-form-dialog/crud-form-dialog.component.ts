@@ -1,5 +1,5 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {AfterContentChecked, Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
@@ -12,7 +12,9 @@ export class CrudFormDialogComponent implements OnInit {
   public FormTypes = FormTypes;
   formGroup: FormGroup;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public config: ICrudDialogConfig<any>) {
+  constructor(
+    public dialogRef: MatDialogRef<CrudFormDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public config: ICrudDialogConfig<any>) {
   }
 
   ngOnInit(): void {
@@ -28,6 +30,10 @@ export class CrudFormDialogComponent implements OnInit {
         return this.config.fieldErrorMessagesByErrorKey.get(errorKey);
       }
     }
+  }
+
+  public confirm(): void {
+    this.dialogRef.close(this.config.data);
   }
 }
 
