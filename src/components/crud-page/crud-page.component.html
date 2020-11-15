@@ -1,0 +1,14 @@
+<div class="user-page-container">
+  <div class="crud-table">
+    <app-crud-table
+      [dataSource]="crudPageConfig.dataSource"
+      [tableConfig]="crudPageConfig.tableConfig">
+    </app-crud-table>
+  </div>
+  <div class="floating-add-button">
+    <button mat-fab color="primary"
+            (click)="add()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</div>

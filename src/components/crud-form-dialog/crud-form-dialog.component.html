@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>{{config.title}}</h1>
+<div class="dialog-content" mat-dialog-content>
+  <ng-container *ngFor="let field of config.formField">
+    <mat-form-field *ngIf="field.formType === FormTypes.text">
+      <mat-label>{{field.label}}</mat-label>
+      <input matInput [(ngModel)]="config.data[field.dataSelector]"/>
+    </mat-form-field>
+  </ng-container>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="">cancel</button>
+  <button mat-raised-button [mat-dialog-close]="config.data">confirm</button>
+</div>
