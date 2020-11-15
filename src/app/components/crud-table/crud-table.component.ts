@@ -10,11 +10,12 @@ export class CrudTableComponent implements OnInit {
 
   @Input() public dataSource: Observable<any[]>;
   @Input() public tableConfig: ICrudTableConfig<any>;
-  public displayedColumns: string[] = ['firstName', 'lastName', 'emailAddress', 'actions'];
+  public displayedColumns: (keyof any)[];
 
   constructor() { }
 
   public ngOnInit(): void {
+    this.displayedColumns = this.tableConfig.displayedColumns.concat(['actions']);
   }
 
 }
